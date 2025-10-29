@@ -48,6 +48,6 @@ public class Credit extends Payment {
 	}
 
 	public String getClassName() {
-		return "CREDIT";
+		return "Credit";
 	}
 }
