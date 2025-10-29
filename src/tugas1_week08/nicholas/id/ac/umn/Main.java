@@ -40,10 +40,58 @@ public class Main {
 					printItem(ListOfItems.get(i));
 					System.out.println("---------------------------");
 				}
-				System.out.print("Pilih : ");
+				System.out.print("Pilih barang (nomor): ");
+				id = s.nextInt();
+				
+				if(id < 1 || id > ListOfItems.size()) {
+					System.out.println("Nomor barang tidak valid!");
+					continue;
+				}
+				
+				Item chosenItem = ListOfItems.get(id - 1);
+
+				System.out.println("Pilih metode pembayaran:");
+				System.out.println("1. Cash");
+				System.out.println("2. Credit");
+				System.out.print("Pilihan: ");
+				int metode = s.nextInt();
+				
+				Payment payment;
+				
+				if(metode == 1) {
+					payment = new Cash(chosenItem);
+					System.out.println("\n=== Pembayaran CASH ===");
+					System.out.println("Total Dibayar: " + payment.pay());
+					System.out.println("Status: " + payment.getStatus());
+					
+				} else if(metode == 2) {
+					System.out.print("Masukkan jumlah cicilan maksimal: ");
+					int maxCicilan = s.nextInt();
+					
+					payment = new Credit(chosenItem, maxCicilan);
+					System.out.println("\n=== Pembayaran CREDIT ===");
+					System.out.println("Bayar cicilan pertama: " + payment.pay());
+					System.out.println("Sisa yang harus dibayar: " + payment.getRemainingAmount());
+					System.out.println("Status: " + payment.getStatus());
+					
+				} else {
+					System.out.println("Metode tidak valid!");
+					continue;
+				}
+				ListOfPayments.add(payment);
 			}
 			else if(opt == 2) {
-				
+				if(ListOfPayments.isEmpty()) {
+					System.out.println("Belum ada transaksi.");
+				} else {
+					System.out.println("=== Daftar Pembayaran ===");
+					for(int i = 0; i < ListOfPayments.size(); i++) {
+						Payment p = ListOfPayments.get(i);
+						System.out.println("[" + (i+1) + "] " + p.getItemName() + 
+								" - Status: " + p.getStatus() + 
+								" - Sisa Bayar: " + p.getRemainingAmount());
+					}
+				}
 			}
 			
 			else if(opt == 0) {
